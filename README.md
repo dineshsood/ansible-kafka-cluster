@@ -1,7 +1,7 @@
 # ansible-kafka-cluster
 Ansible script to create 3 node kafka cluster on RHEL 7.5 by providing either 3 IP address or dns server names 
 
-#### NOTE: I am creating DNS server by editing /etc/hosts file in linux. In production, user DNS names. Also, this script assume the linux boxes are redhat and brand new. Nothing is installed on them. 
+#### NOTE: I am creating DNS server by editing /etc/hosts file in linux. In production, use DNS names. Also, this script assume the linux boxes are redhat and brand new. Nothing is installed on them. 
 
 1. Create **<script_location>** folder inside the Host machine, where you will run Ansible script
    * pull "**ansible-kafka-cluster**" project into this folder from Github
