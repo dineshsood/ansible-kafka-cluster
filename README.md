@@ -4,13 +4,13 @@ Ansible script to create 3 node kafka cluster on RHEL 7.5 by providing either 3 
 Add three Ip addresses or dns names in the `/config/hosts` file
 
 [kafka-broker-1]                                        
-1.2.3.4
+1.2.3.4                            # Provide AWS private IP address
 
 [kafka-broker-2]                   
-2.3.4.5
+2.3.4.5                            # Provide AWS private IP address
 
 [kafka-broker-3]                
-3.4.5.6
+3.4.5.6                            # Provide AWS private IP address
 
 ### Have a look at all the tasks in the `config/roles/kafka-cluster-install/tasks` folder
 The execution sequence is defined in the main.yml file
@@ -20,7 +20,7 @@ For example:
 
 If swappiness is already set to 1. Then, comment task "- name: set swappiness to 1". 
 
-#Note :
+#Note :                   
 #####If you run it multiple times then some of the steps will make changes to the server config again and again.
 For example: task like "`- name: Create Zookeeper myid file in each instance`". which runs echo command and
  Ansible has no way to know if its already ran or not. So, it may run it again and you will end up with duplicate
@@ -36,15 +36,14 @@ https://devopsmates.com/ansible-installation-and-configuration-on-redhatcentos-7
 `sudo yum update -y`             
 `sudo easy_install pip`            
 `sudo pip install paramiko PyYAML jinja2 httplib2`                   
-`sudo pip install ansible`         
-
+`sudo pip install ansible`
 
 # Run Ansibe Kafka install script
-`cd config`               
-`ansible-playbook -vvv  -i ./hosts  ./kafka-cluster-playbook.yml --ask-pass --ask-sudo-pass  --ssh-extra-args='-o "PubkeyAuthentication=no"'  --become  --user=<USER>`
-
-After this, it will ask you for password twice. First User's password and then Sudo password for the same user to upgrade the privileges.
-
+`sudo su -`
+`cd <script_location>/ansible-kafka-cluster`  
+'mkdir <script_location>/SSH' #copy AWS ".pem" file here. Which will be used in the Ansible to login into Servers
+'export ANSIBLE_HOST_KEY_CHECKING=False'        
+`ansible-playbook -vvv  -i ./hosts  ./kafka-cluster-playbook.yml`
 
 # Test Kafka cluster is up and running
 
