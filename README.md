@@ -12,7 +12,7 @@ Add three Ip addresses or dns names in the `/config/hosts` file
 [kafka-broker-3]                
 3.4.5.6                            # Provide AWS private IP address
 
-### Have a look at all the tasks in the `config/roles/kafka-cluster-install/tasks` folder
+### Have a look at all the tasks in the `ansible-kafka-cluster\roles\kafka-cluster-install\tasks` folder
 The execution sequence is defined in the main.yml file
 
 Please go through all the tasks in this folder and comment certain tasks which are not required. 
