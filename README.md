@@ -1,6 +1,8 @@
 # ansible-kafka-cluster
 Ansible script to create 3 node kafka cluster on RHEL 7.5 by providing either 3 IP address or dns server names 
 
+#### NOTE: I am creating DNS server by editing /etc/hosts file in linux. In production, user DNS names.
+
 1. Create **<script_location>** folder inside the Host machine, where you will run Ansible script
    * pull "**ansible-kafka-cluster**" project into this folder from Github
    * `mkdir <script_location>/SSH` folder     
@@ -49,22 +51,22 @@ https://devopsmates.com/ansible-installation-and-configuration-on-redhatcentos-7
 ### SSH into all three host [kafka-broker-1], [kafka-broker-2] and [kafka-broker-3] machines and run below commands
 
 ##### Zookeeper Test
-`echo "ruok" | nc IpAddrees1 2181 ; echo`                  
+`echo "ruok" | nc zookeeper1 2181 ; echo`                  
 Expect imok
 
-`echo "ruok" | nc IpAddrees2 2181 ; echo`         
+`echo "ruok" | nc zookeeper2 2181 ; echo`         
 Expect imok
 
-`echo "ruok" | nc IpAddrees3 2181 ; echo`            
+`echo "ruok" | nc zookeeper3 2181 ; echo`            
 Expect imok
 
 ##### Kafka Test
-`nc -vz IpAddrees1 9092`                 
+`nc -vz kafka1 9092`                 
 Expect "Connection Successful" 
 
-`nc -vz IpAddrees2 9092`
+`nc -vz kafka2 9092`
 
-`nc -vz IpAddrees3 9092`
+`nc -vz kafka3 9092`
 
 # Create Topics, create consumer and producer
 Run these commands from the kafka installation directory.
