@@ -1,0 +1,78 @@
+---
+  - name: Create Zookeeper myid file in each instance
+    shell: |
+      echo "* hard nofile 100000
+      * soft nofile 100000" | tee --append /etc/security/limits.conf
+
+  - name: Rebooting ...
+    shell: sleep 2 && /sbin/shutdown -r now "Reboot required"
+    async: 1
+    poll: 0
+    ignore_errors: true
+    register: rebooting
+
+  - name: Wait for rebooted servers to come back
+    wait_for_connection:
+      connect_timeout: 20
+      sleep: 5
+      delay: 5
+      timeout: 60
+    when: rebooting|changed
+
+  - name: Creates directory
+    file:
+      path: "{{ kafka_data_dir }}"
+      state: directory
+    # when: rebooting|success
+
+  - name: change owner (and group)
+    file:
+      path: "{{ kafka_data_dir }}"
+      owner: "{{ ansible_user }}"
+      group: "{{ ansible_user }}"
+      recurse: true
+
+  - name: Remove old server.properties file
+    file:
+      path: "{{ kafka_install_dir }}/config/server.properties"
+      state: absent
+
+  - name: copy server.properties into "{{ kafka_install_dir }}/config/"
+    template:
+      src: server.properties.j2
+      dest: "{{ kafka_install_dir }}/config/server.properties"
+      owner: root
+      group: root
+
+  - name: copy kafka init file to init.d
+    template:
+      src: kafka.j2
+      dest: /etc/init.d/kafka
+      owner: root
+      group: root
+      mode: 0755
+
+  - name: Changing perm of "/etc/init.d/kafka", adding "+x"
+    file:
+      dest: /etc/init.d/kafka
+      mode: a+x
+
+  - name: Enable services for automatic start
+    service:
+      name: kafka
+      enabled: yes
+
+  - name: Start service kafka stopped
+    service:
+      name: kafka
+      state: stopped
+
+  - name: Start service kafka reloaded
+    service:
+      name: kafka
+      state: reloaded
+
+  - name: Start service kafka started
+    service:
+      name: kafka
+      state: started

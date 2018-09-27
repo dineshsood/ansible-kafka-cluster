@@ -1,0 +1,61 @@
+---
+  - name: Creates directory
+    file:
+      path: "{{ zookeeper_data_dir }}"
+      state: directory
+
+  - name: change owner (and group)
+    file:
+      path: "{{ zookeeper_data_dir }}"
+      owner: "{{ ansible_user }}"
+      group: "{{ ansible_user }}"
+      recurse: true
+
+  - name: Create Zookeeper myid file in each instance
+    shell: |
+      echo "{{ myid }}" > {{ zookeeper_data_dir }}/myid
+
+  - name: Create Zookeeper properties
+    file:
+      path: "{{ kafka_install_dir }}/config/zookeeper.properties"
+      state: absent
+
+  - name: copy zookeeper.properties into "{{ kafka_install_dir }}/config/"
+    template:
+      src: zookeeper.properties.j2
+      dest: "{{ kafka_install_dir }}/config/zookeeper.properties"
+      owner: root
+      group: root
+
+  - name: copy zookeeper init file to init.d
+    template:
+      src: zookeeper.j2
+      dest: /etc/init.d/zookeeper
+      owner: root
+      group: root
+      mode: 0755
+
+  - name: Changing perm of "/etc/init.d/zookeeper", adding "+x"
+    file:
+      dest: /etc/init.d/zookeeper
+      mode: a+x
+
+  - name: Enable services for automatic start
+    service:
+      name: zookeeper
+      enabled: yes
+
+  - name: Start service zookeeper stopped
+    service:
+      name: zookeeper
+      state: stopped
+
+  - name: Start service zookeeper reloaded
+    service:
+      name: zookeeper
+      state: reloaded
+
+  - name: Start service zookeeper started
+    service:
+      name: zookeeper
+      state: started

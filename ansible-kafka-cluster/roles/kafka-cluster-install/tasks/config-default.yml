@@ -1,0 +1,65 @@
+---
+  - name: upgrade all packages
+    yum:
+      name: '*'
+      state: latest
+      update_cache: yes
+
+  - name: install required packages
+    yum: pkg={{item}} state=installed
+    with_items:
+     - wget
+     - ca-certificates
+     - zip
+     - net-tools
+     - vim
+     - nano
+     - tar
+     - nc
+
+  - name: download java JDK 8
+    get_url:
+      url: http://download.oracle.com/otn-pub/java/jdk/8u181-b13/96a7b8442fe848ef90c96a2fad6ed6d1/jdk-8u181-linux-x64.rpm
+      dest: /opt/jdk-8u181-linux-x64.rpm
+      headers: 'Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie'
+
+  - name: install java JDK 8 rpm from local location
+    yum:
+      name: /opt/jdk-8u181-linux-x64.rpm
+      state: present
+
+  # Set vm.swappiness to 1 in /etc/sysctl.conf
+  - name: set swappiness to 1
+    sysctl:
+      name: vm.swappiness
+      value: 1
+      state: present
+
+  - name: Download kafka
+    get_url:
+      url: http://apache.mirror.digitalpacific.com.au/kafka/0.10.2.1/kafka_2.12-0.10.2.1.tgz
+      dest: /opt/kafka_2.12-0.10.2.1.tgz
+      mode: 0644
+      force: no
+
+    # Need this step for "unarchive" step
+  - name: Creates kafka_install_dir
+    file:
+      path: "{{ kafka_install_dir }}"
+      state: directory
+
+  - name: Extract kafka into "{{ kafka_install_dir }}"
+    unarchive:
+      src: /opt/kafka_2.12-0.10.2.1.tgz
+      dest: "{{ kafka_install_dir }}"
+      remote_src: yes
+      extra_opts: [--strip-components=1]
+
+  - name: Create local DNS server for Testing
+    shell: |
+      echo "{{ kafka1_ip }} {{ kafka1_hostname }}
+      {{ kafka1_ip }} {{ zookeeper1_hostname }}
+      {{ kafka2_ip }} {{ kafka2_hostname }}
+      {{ kafka2_ip }} {{ zookeeper2_hostname }}
+      {{ kafka3_ip }} {{ kafka3_hostname }}
+      {{ kafka3_ip }} {{ zookeeper3_hostname }}" | tee --append /etc/hosts

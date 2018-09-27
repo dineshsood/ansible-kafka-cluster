@@ -1,0 +1,3 @@
+---
+  myid: 3
+  my_host: "{{ groups['kafka-broker-3'][0] }}"

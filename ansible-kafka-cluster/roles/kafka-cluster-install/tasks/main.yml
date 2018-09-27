@@ -1,0 +1,4 @@
+---
+  - include: config-default.yml
+  - include: config-zookeeper.yml
+  - include: config-kafka.yml

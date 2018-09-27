@@ -1,0 +1,4 @@
+---
+zookeeper_data_dir: /data/zookeeper
+kafka_install_dir: /opt/kafka
+kafka_data_dir: /data/kafka
