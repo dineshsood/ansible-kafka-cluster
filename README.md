@@ -42,8 +42,8 @@ https://devopsmates.com/ansible-installation-and-configuration-on-redhatcentos-7
 `sudo su -`
 `cd <script_location>/ansible-kafka-cluster`  
 ##### NOTE : copy AWS ".pem" file into <script_location>/SSH location. Which will be used in the Ansible to login into Servers
-'mkdir <script_location>/SSH' 
-'export ANSIBLE_HOST_KEY_CHECKING=False'        
+`mkdir <script_location>/SSH`                          
+`export ANSIBLE_HOST_KEY_CHECKING=False`                 
 `ansible-playbook -vvv  -i ./hosts  ./kafka-cluster-playbook.yml`
 
 # Test Kafka cluster is up and running
