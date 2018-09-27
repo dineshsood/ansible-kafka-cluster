@@ -70,15 +70,15 @@ Expect "Connection Successful"
 Run these commands from the kafka installation directory.
 
 ##### Create topic -> SSH into [kafka-broker-1] host machine and run below command
-`bin/kafka-topics.sh --zookeeper zookeeper1Ip:2181,zookeeper2Ip:2181,zookeeper3Ip:2181/kafka --create --topic second_topic --replication-factor 3 --partitions 3`
+`/opt/kafka/bin/kafka-topics.sh --zookeeper zookeeper1:2181,zookeeper2:2181,zookeeper3:2181/kafka --create --topic second_topic --replication-factor 3 --partitions 3`
 
 ##### we can publish data to Kafka using the bootstrap server list. SSH into [kafka-broker-1] host machine and run below command. Hist enter, let the producer running
-`bin/kafka-console-producer.sh --broker-list kafka1:9092,kafka2:9092,kafka3:9092 --topic second_topic`
+`/opt/kafka/bin/kafka-console-producer.sh --broker-list kafka1:9092,kafka2:9092,kafka3:9092 --topic second_topic`
 
 ##### we can read data using any broker too! SSH into [kafka-broker-2] host machine and run below command
-`bin/kafka-console-consumer.sh --bootstrap-server kafka1:9092,kafka2:9092,kafka3:9092 --topic second_topic --from-beginning`
+`/opt/kafka/bin/kafka-console-consumer.sh --bootstrap-server kafka1:9092,kafka2:9092,kafka3:9092 --topic second_topic --from-beginning`
 
 ##### we can read data using any broker too! SSH into [kafka-broker-3] host machine and run below command
-`bin/kafka-console-consumer.sh --bootstrap-server kafka1:9092,kafka2:9092,kafka3:9092 --topic second_topic --from-beginning`
+`/opt/kafka/bin/kafka-console-consumer.sh --bootstrap-server kafka1:9092,kafka2:9092,kafka3:9092 --topic second_topic --from-beginning`
 
 Now, go back to [kafka-broker-1] host, where kafka producer is running and type some text and see it coming on [kafka-broker-2] and [kafka-broker-3] host. It, means kafka cluster is running fine.
