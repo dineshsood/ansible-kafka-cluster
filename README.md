@@ -9,9 +9,9 @@ Ansible script to create 3 node kafka cluster on RHEL 7.5 by providing either 3 
    * Copy AWS "<aws-private-key>.pem" file into <script_location>/SSH location. Which will be used by Ansible script to login into Servers
    * Open **<script_location>/ansible-kafka-cluster/group_vars/all.yml** file and replace **\<aws-private-key\>** with name of your **_aws private key file name_** in line **/home/{{ ansible_user }}/SSH/\<aws-private-key>\.pem**                         
 
-2. Make sure all the three host machines can talk to each other on port 2181,2888,3888,9092 and 22. Also, host machine where Ansible script is running can talk to all the three host machines on port 22.
+2. Make sure all the three machines(kafka nodes) can talk to each other on port 2181, 2888, 3888, 9092 and 22. Also, host machine where Ansible script is running can talk to other three kafka node machines on port 22. In, AWS you can use security groups to do this.
 
-3. Add three private Ip addresses in the `<script_location>/ansible-kafka-cluster/hosts` inventory file
+3. Add three private Ip addresses in the `<script_location>/ansible-kafka-cluster/hosts` inventory file. In AWS, every virtual machine will have its private Ip address. I created all four VMs in the default VPN.
 
 [kafka-broker-1]                                        
 _**Private-IPv4-1**_                                         # Provide AWS EC2 private IP address
