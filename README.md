@@ -14,13 +14,13 @@ Ansible script to create 3 node kafka cluster on RHEL 7.5 by providing either 3 
 3. Add three private Ip addresses in the `<script_location>/ansible-kafka-cluster/hosts` inventory file
 
 [kafka-broker-1]                                        
-_**Priavte-IPv4-1**_                                         # Provide AWS EC2 private IP address
+_**Private-IPv4-1**_                                         # Provide AWS EC2 private IP address
 
 [kafka-broker-2]                   
-_**Priavte-IPv4-2**_                                         # Provide AWS EC2 private IP address
+_**Private-IPv4-2**_                                         # Provide AWS EC2 private IP address
 
 [kafka-broker-3]                
-_**Priavte-IPv4-3**_                                         # Provide AWS EC2 private IP address
+_**Private-IPv4-3**_                                         # Provide AWS EC2 private IP address
 
 ### Have a look at all the tasks in the `ansible-kafka-cluster\roles\kafka-cluster-install\tasks` folder
 The execution sequence is defined in the main.yml file
